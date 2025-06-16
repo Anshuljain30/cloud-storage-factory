@@ -1,0 +1,28 @@
+# Don't publish source code
+src/
+
+# Don't publish configs and metadata
+tsconfig.json
+tsconfig.*.json
+.eslintrc*
+.prettierrc*
+.npmignore
+.gitignore
+
+# Don't publish development files
+*.log
+*.test.ts
+tests/
+coverage/
+.vscode/
+.idea/
+
+# Don't publish docs/demos
+examples/
+docs/
+
+# Don't publish version control
+.git/
+
+# Don't publish environment configs
+.env
