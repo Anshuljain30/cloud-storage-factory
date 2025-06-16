@@ -4,9 +4,9 @@ import {
   generateBlobSASQueryParameters,
   BlobSASPermissions,
   SASProtocol,
-} from "@azure/storage-blob";
-import { CloudStorageProvider } from "../storage.interface";
-import * as fs from "fs";
+} from '@azure/storage-blob';
+import { CloudStorageProvider } from '../common/shared-interfaces';
+import * as fs from 'fs';
 
 interface AzureConfig {
   accountName: string;
@@ -25,17 +25,12 @@ export class AzureProvider implements CloudStorageProvider {
     this.accountKey = config.accountKey;
     this.containerName = config.containerName;
 
-    const credential = new StorageSharedKeyCredential(
-      this.accountName,
-      this.accountKey
-    );
+    const credential = new StorageSharedKeyCredential(this.accountName, this.accountKey);
     const blobServiceClient = new BlobServiceClient(
       `https://${this.accountName}.blob.core.windows.net`,
-      credential
+      credential,
     );
-    this.containerClient = blobServiceClient.getContainerClient(
-      this.containerName
-    );
+    this.containerClient = blobServiceClient.getContainerClient(this.containerName);
   }
 
   async uploadFile(localPath: string, remotePath: string): Promise<string> {
@@ -54,11 +49,11 @@ export class AzureProvider implements CloudStorageProvider {
       {
         containerName: this.containerName,
         blobName: remotePath,
-        permissions: BlobSASPermissions.parse("cwr"), // create, write, read
+        permissions: BlobSASPermissions.parse('cwr'), // create, write, read
         expiresOn,
         protocol: SASProtocol.Https,
       },
-      new StorageSharedKeyCredential(this.accountName, this.accountKey)
+      new StorageSharedKeyCredential(this.accountName, this.accountKey),
     ).toString();
 
     return `${blobClient.url}?${sasToken}`;
@@ -72,8 +67,8 @@ export class AzureProvider implements CloudStorageProvider {
     return new Promise((resolve, reject) => {
       downloadResponse.readableStreamBody
         ?.pipe(writableStream)
-        .on("error", reject)
-        .on("finish", resolve);
+        .on('error', reject)
+        .on('finish', resolve);
     });
   }
 

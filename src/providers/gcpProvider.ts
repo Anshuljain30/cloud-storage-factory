@@ -1,7 +1,5 @@
-import { Storage } from "@google-cloud/storage";
-import * as path from "path";
-import * as fs from "fs";
-import { CloudStorageProvider } from "../storage.interface";
+import { Storage } from '@google-cloud/storage';
+import { CloudStorageProvider } from '../common/shared-interfaces';
 
 interface GcpConfig {
   bucket: string;
@@ -30,10 +28,10 @@ export class GcpProvider implements CloudStorageProvider {
   async uploadPreSignedUrl(remotePath: string): Promise<string> {
     const file = this.storage.bucket(this.bucketName).file(remotePath);
     const [url] = await file.getSignedUrl({
-      version: "v4",
-      action: "write",
+      version: 'v4',
+      action: 'write',
       expires: Date.now() + 3600 * 1000, // 1 hour
-      contentType: "application/octet-stream",
+      contentType: 'application/octet-stream',
     });
 
     return url;
@@ -41,10 +39,7 @@ export class GcpProvider implements CloudStorageProvider {
 
   async downloadFile(remotePath: string, localPath: string): Promise<void> {
     const options = { destination: localPath };
-    await this.storage
-      .bucket(this.bucketName)
-      .file(remotePath)
-      .download(options);
+    await this.storage.bucket(this.bucketName).file(remotePath).download(options);
   }
 
   async deleteFile(remotePath: string): Promise<void> {
