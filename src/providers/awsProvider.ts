@@ -1,12 +1,12 @@
+import { createReadStream, createWriteStream } from 'fs';
 import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { createReadStream, createWriteStream } from "fs";
-import { CloudStorageProvider } from "../storage.interface";
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { CloudStorageProvider } from '../common/shared-interfaces';
 
 export class AWSProvider implements CloudStorageProvider {
   private s3Client: S3Client;
@@ -60,12 +60,12 @@ export class AWSProvider implements CloudStorageProvider {
       response.Body.pipe(fileStream);
 
       return new Promise((resolve, reject) => {
-        fileStream.on("finish", resolve);
-        fileStream.on("error", reject);
+        fileStream.on('finish', resolve);
+        fileStream.on('error', reject);
       });
     }
 
-    throw new Error("No body in response");
+    throw new Error('No body in response');
   }
 
   async deleteFile(fileKey: string): Promise<void> {
