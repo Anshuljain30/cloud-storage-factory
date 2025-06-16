@@ -6,7 +6,13 @@ import { AWS_CONFIG_ERROR, GCP_CONFIG_ERROR, AZURE_CONFIG_ERROR } from '../const
  * Validates AWS configuration
  */
 export function validateAwsConfig(config: AwsConfig): void {
-  if (!config.region || !config.bucket || !config.accessKeyId || !config.secretAccessKey) {
+  if (
+    !config.region ||
+    !config.bucket ||
+    !config.credentials ||
+    !config.credentials.accessKeyId ||
+    !config.credentials.secretAccessKey
+  ) {
     throw new StorageFactoryError(AWS_CONFIG_ERROR);
   }
 }
