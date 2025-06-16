@@ -6,17 +6,15 @@ import {
   DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { CloudStorageProvider } from '../common/shared-interfaces';
+import { BaseProvider } from './baseProvider';
+import { AwsConfig } from '../common/shared-interfaces';
 
-export class AWSProvider implements CloudStorageProvider {
-  private s3Client: S3Client;
-  private bucket: string;
+export class AWSProvider extends BaseProvider {
+  private readonly s3Client: S3Client;
+  private readonly bucket: string;
 
-  constructor(config: {
-    region: string;
-    bucket: string;
-    credentials?: { accessKeyId: string; secretAccessKey: string };
-  }) {
+  constructor(config: AwsConfig) {
+    super();
     this.s3Client = new S3Client({
       region: config.region,
       credentials: config.credentials,
@@ -25,37 +23,56 @@ export class AWSProvider implements CloudStorageProvider {
   }
 
   async uploadFile(filePath: string, destinationPath: string): Promise<string> {
-    const fileStream = createReadStream(filePath);
+    try {
+      this.validatePath(filePath);
+      this.validatePath(destinationPath);
 
-    const command = new PutObjectCommand({
-      Bucket: this.bucket,
-      Key: destinationPath,
-      Body: fileStream,
-    });
+      const fileStream = createReadStream(filePath);
+      const command = new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: destinationPath,
+        Body: fileStream,
+      });
 
-    await this.s3Client.send(command);
-    return `https://${this.bucket}.s3.amazonaws.com/${destinationPath}`;
+      await this.s3Client.send(command);
+      return `https://${this.bucket}.s3.amazonaws.com/${destinationPath}`;
+    } catch (error) {
+      this.handleError('upload file', error);
+    }
   }
 
   async uploadPreSignedUrl(destinationPath: string): Promise<string> {
-    const command = new PutObjectCommand({
-      Bucket: this.bucket,
-      Key: destinationPath,
-    });
+    try {
+      this.validatePath(destinationPath);
 
-    return getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
+      const command = new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: destinationPath,
+      });
+
+      return await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
+    } catch (error) {
+      this.handleError('generate pre-signed URL', error);
+    }
   }
 
   async downloadFile(fileKey: string, localPath: string): Promise<void> {
-    const command = new GetObjectCommand({
-      Bucket: this.bucket,
-      Key: fileKey,
-    });
+    try {
+      this.validatePath(fileKey);
+      this.validatePath(localPath);
 
-    const response = await this.s3Client.send(command);
-    const fileStream = createWriteStream(localPath);
+      const command = new GetObjectCommand({
+        Bucket: this.bucket,
+        Key: fileKey,
+      });
 
-    if (response.Body) {
+      const response = await this.s3Client.send(command);
+      const fileStream = createWriteStream(localPath);
+
+      if (!response.Body) {
+        throw new Error('No body in response');
+      }
+
       // @ts-ignore - AWS SDK types are not perfect
       response.Body.pipe(fileStream);
 
@@ -63,17 +80,23 @@ export class AWSProvider implements CloudStorageProvider {
         fileStream.on('finish', resolve);
         fileStream.on('error', reject);
       });
+    } catch (error) {
+      this.handleError('download file', error);
     }
-
-    throw new Error('No body in response');
   }
 
   async deleteFile(fileKey: string): Promise<void> {
-    const command = new DeleteObjectCommand({
-      Bucket: this.bucket,
-      Key: fileKey,
-    });
+    try {
+      this.validatePath(fileKey);
 
-    await this.s3Client.send(command);
+      const command = new DeleteObjectCommand({
+        Bucket: this.bucket,
+        Key: fileKey,
+      });
+
+      await this.s3Client.send(command);
+    } catch (error) {
+      this.handleError('delete file', error);
+    }
   }
 }
