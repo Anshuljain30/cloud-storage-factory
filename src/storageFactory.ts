@@ -10,13 +10,10 @@ import {
 import { StorageFactoryError } from './common/errors';
 import { validateAwsConfig, validateGcpConfig, validateAzureConfig } from './common/validators';
 
-/**
- * Factory function to create cloud storage provider instances
- * @param provider - The type of cloud storage provider to create
- * @param config - Configuration object for the selected provider
- * @returns An instance of CloudStorageProvider
- * @throws {StorageFactoryError} If the provider is unsupported or configuration is invalid
- */
+// Function overloads for type safety
+export function StorageFactory(provider: 'aws', config: AwsConfig): CloudStorageProvider;
+export function StorageFactory(provider: 'azure', config: AzureConfig): CloudStorageProvider;
+export function StorageFactory(provider: 'gcp', config: GcpConfig): CloudStorageProvider;
 export function StorageFactory(
   provider: ProviderType,
   config: ProviderConfig,
