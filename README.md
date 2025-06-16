@@ -58,11 +58,10 @@ import { StorageFactory } from 'cloud-storage-factory';
 const storage = StorageFactory('aws', {
   region: 'us-east-1',
   bucket: 'your-bucket-name',
-  accessKeyId: 'your-access-key',
-  secretAccessKey: 'your-secret-key',
-  // Optional configurations
-  endpoint: 'https://s3.amazonaws.com', // Custom endpoint
-  s3ForcePathStyle: true, // Use path-style URLs
+  credentials: {
+    accessKeyId: 'your-access-key',
+    secretAccessKey: 'your-secret-key',
+  },
 });
 ```
 
