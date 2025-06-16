@@ -1,5 +1,5 @@
-import { AwsConfig, GcpConfig, AzureConfig } from '../types/storage.types';
-import { StorageFactoryError } from '../errors/storage.errors';
+import { AwsConfig, GcpConfig, AzureConfig } from '../shared-interfaces';
+import { StorageFactoryError } from '../errors';
 
 /**
  * Validates AWS configuration
