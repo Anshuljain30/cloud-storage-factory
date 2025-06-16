@@ -4,8 +4,7 @@
 export interface AwsConfig {
   region: string;
   bucket: string;
-  accessKeyId: string;
-  secretAccessKey: string;
+  credentials?: { accessKeyId: string; secretAccessKey: string };
 }
 
 /**
