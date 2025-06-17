@@ -1,6 +1,11 @@
-import { AwsConfig, GcpConfig, AzureConfig } from '../shared-interfaces';
+import { AwsConfig, GcpConfig, AzureConfig, R2Config } from '../shared-interfaces';
 import { StorageFactoryError } from '../errors';
-import { AWS_CONFIG_ERROR, GCP_CONFIG_ERROR, AZURE_CONFIG_ERROR } from '../constants';
+import {
+  AWS_CONFIG_ERROR,
+  GCP_CONFIG_ERROR,
+  AZURE_CONFIG_ERROR,
+  R2_CONFIG_ERROR,
+} from '../constants';
 
 /**
  * Validates AWS configuration
@@ -32,5 +37,14 @@ export function validateGcpConfig(config: GcpConfig): void {
 export function validateAzureConfig(config: AzureConfig): void {
   if (!config.accountName || !config.accountKey || !config.containerName) {
     throw new StorageFactoryError(AZURE_CONFIG_ERROR);
+  }
+}
+
+/**
+ * Validates R2 configuration
+ */
+export function validateR2Config(config: R2Config): void {
+  if (!config.accountId || !config.accessKeyId || !config.secretAccessKey || !config.bucket) {
+    throw new StorageFactoryError(R2_CONFIG_ERROR);
   }
 }

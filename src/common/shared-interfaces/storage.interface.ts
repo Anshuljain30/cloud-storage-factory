@@ -24,6 +24,16 @@ export interface AzureConfig {
   containerName: string;
 }
 
+/**
+ * Cloudflare R2 configuration
+ */
+export interface R2Config {
+  accountId: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  bucket: string;
+}
+
 export interface CloudStorageProvider {
   uploadFile(filePath: string, destinationPath: string): Promise<string>;
   uploadPreSignedUrl(destinationPath: string): Promise<string>;

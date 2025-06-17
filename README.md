@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-A robust TypeScript-based SDK that provides a unified interface for interacting with major cloud storage providers (AWS S3, Azure Blob Storage, and Google Cloud Storage). This SDK simplifies cloud storage operations while maintaining type safety and flexibility.
+A robust TypeScript-based SDK that provides a unified interface for interacting with major cloud storage providers (AWS S3, Azure Blob Storage, Google Cloud Storage, and Cloudflare R2). This SDK simplifies cloud storage operations while maintaining type safety and flexibility.
 
 ## 📋 Table of Contents
 
@@ -72,9 +72,6 @@ const storage = StorageFactory('azure', {
   accountName: 'your-account-name',
   accountKey: 'your-account-key',
   containerName: 'your-container-name',
-  // Optional configurations
-  endpoint: 'https://your-account.blob.core.windows.net',
-  sasToken: 'your-sas-token', // Optional SAS token
 });
 ```
 
@@ -84,9 +81,17 @@ const storage = StorageFactory('azure', {
 const storage = StorageFactory('gcp', {
   bucket: 'your-gcp-bucket-name',
   keyFilename: 'path/to/service-account.json',
-  // Optional configurations
-  projectId: 'your-project-id',
-  apiEndpoint: 'https://storage.googleapis.com',
+});
+```
+
+#### Cloudflare R2
+
+```typescript
+const storage = StorageFactory('r2', {
+  accountId: 'your-account-id',
+  accessKeyId: 'your-access-key-id',
+  secretAccessKey: 'your-secret-access-key',
+  bucket: 'your-bucket-name',
 });
 ```
 
@@ -94,34 +99,26 @@ const storage = StorageFactory('gcp', {
 
 ```typescript
 // Upload a file
-await storage.uploadFile('local/path.txt', 'remote/path.txt', {
-  contentType: 'text/plain',
-  metadata: { key: 'value' },
-});
+await storage.uploadFile('local/path.txt', 'remote/path.txt');
 
 // Generate a pre-signed upload URL (valid for 1 hour)
-const url = await storage.uploadPreSignedUrl('remote/upload.txt', {
-  expiresIn: 3600,
-  contentType: 'application/json',
-});
+const url = await storage.uploadPreSignedUrl('remote/upload.txt');
 
 // Download a file
 await storage.downloadFile('remote/path.txt', 'local/downloaded.txt');
 
 // Delete a file
 await storage.deleteFile('remote/path.txt');
-
-// List files in a directory
-const files = await storage.listFiles('remote/directory/');
 ```
 
 ## 📑 Supported Cloud Providers
 
-| Provider | Status | Required Config                              | Optional Config            |
-| -------- | ------ | -------------------------------------------- | -------------------------- |
-| AWS      | ✅     | region, bucket, accessKeyId, secretAccessKey | endpoint, s3ForcePathStyle |
-| Azure    | ✅     | accountName, accountKey, containerName       | endpoint, sasToken         |
-| GCP      | ✅     | bucket, keyFilename                          | projectId, apiEndpoint     |
+| Provider | Status | Required Config                                 | Optional Config |
+| -------- | ------ | ----------------------------------------------- | --------------- |
+| AWS      | ✅     | region, bucket, accessKeyId, secretAccessKey    | -               |
+| Azure    | ✅     | accountName, accountKey, containerName          | -               |
+| GCP      | ✅     | bucket, keyFilename                             | -               |
+| R2       | ✅     | accountId, accessKeyId, secretAccessKey, bucket | -               |
 
 ## 🔧 Troubleshooting
 
