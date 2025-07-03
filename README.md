@@ -1,4 +1,4 @@
-# 🌩️ Cloud Storage Factory
+# Cloud Storage Factory
 
 [![npm version](https://img.shields.io/npm/v/cloud-storage-factory.svg)](https://www.npmjs.com/package/cloud-storage-factory)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,7 +6,7 @@
 
 A robust TypeScript-based SDK that provides a unified interface for interacting with major cloud storage providers (AWS S3, Azure Blob Storage, Google Cloud Storage, and Cloudflare R2). This SDK simplifies cloud storage operations while maintaining type safety and flexibility.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Features](#-features)
 - [Installation](#-installation)
@@ -18,18 +18,18 @@ A robust TypeScript-based SDK that provides a unified interface for interacting 
 - [Contributing](#-contributing)
 - [License](#-license)
 
-## ✨ Features
+## Features
 
-- 🚀 **Unified API**: Consistent interface across all supported cloud providers
-- 📤 **File Operations**: Upload, download, and delete files with ease
-- 🔗 **Pre-signed URLs**: Generate secure, time-limited upload URLs
-- 🔒 **Type Safety**: Full TypeScript support with comprehensive type definitions
-- 🎯 **Factory Pattern**: Easy provider switching and configuration
-- 📦 **Zero Dependencies**: Lightweight and efficient
-- 🔄 **Async/Await**: Modern Promise-based API
-- 🛠️ **Extensible**: Easy to add support for new cloud providers
+- **Unified API**: Consistent interface across all supported cloud providers
+- **File Operations**: Upload, download, and delete files with ease
+- **Pre-signed URLs**: Generate secure, time-limited upload URLs
+- **Type Safety**: Full TypeScript support with comprehensive type definitions
+- **Factory Pattern**: Easy provider switching and configuration
+- **Zero Dependencies**: Lightweight and efficient
+- **Async/Await**: Modern Promise-based API
+- **Extensible**: Easy to add support for new cloud providers
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Using npm
@@ -42,7 +42,7 @@ yarn add cloud-storage-factory
 pnpm add cloud-storage-factory
 ```
 
-## 🛠️ Usage
+## Usage
 
 ### 1. Import the Factory
 
@@ -111,16 +111,16 @@ await storage.downloadFile('remote/path.txt', 'local/downloaded.txt');
 await storage.deleteFile('remote/path.txt');
 ```
 
-## 📑 Supported Cloud Providers
+## Supported Cloud Providers
 
-| Provider | Status | Required Config                                 | Optional Config |
-| -------- | ------ | ----------------------------------------------- | --------------- |
-| AWS      | ✅     | region, bucket, accessKeyId, secretAccessKey    | -               |
-| Azure    | ✅     | accountName, accountKey, containerName          | -               |
-| GCP      | ✅     | bucket, keyFilename                             | -               |
-| R2       | ✅     | accountId, accessKeyId, secretAccessKey, bucket | -               |
+| Provider | Required Config                                 |
+| -------- | ----------------------------------------------- |
+| AWS      | region, bucket, accessKeyId, secretAccessKey    |
+| Azure    | accountName, accountKey, containerName          |
+| GCP      | bucket, keyFilename                             |
+| R2       | accountId, accessKeyId, secretAccessKey, bucket |
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -141,7 +141,7 @@ await storage.deleteFile('remote/path.txt');
    - Check file permissions
    - Ensure sufficient storage space
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Here's how you can help:
 
@@ -167,7 +167,7 @@ npm test
 npm run build
 ```
 
-## 📄 License
+## License
 
 MIT License © 2025
 
