@@ -24,5 +24,9 @@
   },
   "devDependencies": {
     "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anshuljain30/cloud-storage-factory.git"
   }
 }
